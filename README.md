@@ -260,12 +260,7 @@ df.loc[df['thalassemia_type'] == 1, 'thalassemia_type'] = 'fixed defect'
 df.loc[df['thalassemia_type'] == 2, 'thalassemia_type'] = 'normal'
 df.loc[df['thalassemia_type'] == 3, 'thalassemia_type'] = 'reversable defect'
 df.head()
-age	sex	chest_pain_type	resting_blood_pressure	cholesterol	fasting_blood_sugar	rest_ecg_type	max_heart_rate_achieved	exercise_induced_angina	st_depression	st_slope_type	num_major_vessels	thalassemia_type	target
-0	63	1	typical angina	145	233	1	left ventricular hypertrophy	150	0	2.3	downsloping	0	fixed defect	1
-1	37	1	non-anginal pain	130	250	0	normal	187	0	3.5	downsloping	0	normal	1
-2	41	0	atypical angina	130	204	0	left ventricular hypertrophy	172	0	1.4	upsloping	0	normal	1
-3	56	1	atypical angina	120	236	0	normal	178	0	0.8	upsloping	0	normal	1
-4	57	0	asymptomatic	120	354	0	normal	163	1	0.6	upsloping	0	normal	1
+
 data = pd.get_dummies(df, drop_first=False)
 data.columns
 Index(['age', 'sex', 'resting_blood_pressure', 'cholesterol',
@@ -283,22 +278,12 @@ Index(['age', 'sex', 'resting_blood_pressure', 'cholesterol',
 df_temp = data['thalassemia_type_fixed defect']
 data = pd.get_dummies(df, drop_first=True)
 data.head()
-age	sex	resting_blood_pressure	cholesterol	fasting_blood_sugar	max_heart_rate_achieved	exercise_induced_angina	st_depression	num_major_vessels	target	chest_pain_type_atypical angina	chest_pain_type_non-anginal pain	chest_pain_type_typical angina	rest_ecg_type_left ventricular hypertrophy	rest_ecg_type_normal	st_slope_type_flat	st_slope_type_upsloping	thalassemia_type_normal	thalassemia_type_nothing	thalassemia_type_reversable defect
-0	63	1	145	233	1	150	0	2.3	0	1	0	0	1	1	0	0	0	0	0	0
-1	37	1	130	250	0	187	0	3.5	0	1	0	1	0	0	1	0	0	1	0	0
-2	41	0	130	204	0	172	0	1.4	0	1	1	0	0	1	0	0	1	1	0	0
-3	56	1	120	236	0	178	0	0.8	0	1	1	0	0	0	1	0	1	1	0	0
-4	57	0	120	354	0	163	1	0.6	0	1	0	0	0	0	1	0	1	1	0	0
+
 frames = [data, df_temp]
 result = pd.concat(frames,axis=1)
 
 result.head()
-age	sex	resting_blood_pressure	cholesterol	fasting_blood_sugar	max_heart_rate_achieved	exercise_induced_angina	st_depression	num_major_vessels	target	...	chest_pain_type_non-anginal pain	chest_pain_type_typical angina	rest_ecg_type_left ventricular hypertrophy	rest_ecg_type_normal	st_slope_type_flat	st_slope_type_upsloping	thalassemia_type_normal	thalassemia_type_nothing	thalassemia_type_reversable defect	thalassemia_type_fixed defect
-0	63	1	145	233	1	150	0	2.3	0	1	...	0	1	1	0	0	0	0	0	0	1
-1	37	1	130	250	0	187	0	3.5	0	1	...	1	0	0	1	0	0	1	0	0	0
-2	41	0	130	204	0	172	0	1.4	0	1	...	0	0	1	0	0	1	1	0	0	0
-3	56	1	120	236	0	178	0	0.8	0	1	...	0	0	0	1	0	1	1	0	0	0
-4	57	0	120	354	0	163	1	0.6	0	1	...	0	0	0	1	0	1	1	0	0	0
+
 5 rows × 21 columns
 
 result.drop('thalassemia_type_nothing',axis=1,inplace=True)
@@ -353,21 +338,14 @@ print(accuracy_score(y_test,y_pred))
 0.8688524590163934
 from sklearn.metrics import classification_report
 print(classification_report(y_test,y_pred))
-              precision    recall  f1-score   support
-
-           0       0.83      0.89      0.86        27
-           1       0.91      0.85      0.88        34
-
-    accuracy                           0.87        61
-   macro avg       0.87      0.87      0.87        61
-weighted avg       0.87      0.87      0.87        61
+              
 
 from sklearn.metrics import confusion_matrix
 print(confusion_matrix(y_test,y_pred))
 sns.heatmap(confusion_matrix(y_test,y_pred),annot=True)
 [[24  3]
  [ 5 29]]
-<AxesSubplot:>
+
 
 from sklearn.metrics import roc_curve
 fpr, tpr, thresholds = roc_curve(y_test, y_pred)
